@@ -1,0 +1,64 @@
+"""
+            Objetivo de la Historia de usuario
+
+Gestionar varios productos en el inventario mediante un menú interactivo.
+Organizar registros, validar datos y obtener estadísticas básicas de forma sencilla.
+Aplicar estructuras condicionales (if/elif/else) y bucles (while y for) en Python, utilizando listas y diccionarios para almacenar productos, validar 
+entradas y calcular estadísticas del inventario.
+
+1. Validación de datos con condicionales:
+
+    Crea un menú que pregunte al usuario qué acción desea realizar:
+        Agregar producto
+        Mostrar inventario
+        Calcular estadísticas
+        Salir
+    Usa condicionales if, elif y else para procesar la opción elegida.
+    Si el usuario ingresa una opción inválida, muestra un mensaje de error y pide nuevamente la entrada.
+
+TASK 2
+2. Implementar un bucle para múltiples registros:
+
+    Envuelve el menú en un bucle while que continúe ejecutándose hasta que el usuario elija salir.
+    Permite agregar varios productos seguidos (nombre, precio y cantidad).
+    Cada producto debe almacenarse como un diccionario dentro de una lista llamada inventario.
+        producto = {"nombre": "Lápiz", "precio": 500, "cantidad": 3}
+        inventario.append(producto)
+
+TASK 3
+3. Mostrar todos los productos del inventario:
+
+    Implementa una opción en el menú que recorra el inventario con un bucle for.
+    Muestra todos los productos en un formato claro:
+        Producto: Lápiz | Precio: 500 | Cantidad: 3
+    Si el inventario está vacío, muestra un mensaje que lo indique.
+
+TASK 4
+4. Calcular estadísticas básicas:
+
+    Implementa en el menú una opción para calcular:
+        El valor total del inventario (sumatoria de precio × cantidad).
+        La cantidad total de productos registrados.
+    Muestra los resultados usando print() de manera clara.
+
+TASK 5
+5. Documentación y limpieza del código:
+
+    Comenta el código explicando la funcionalidad de cada sección (menú, bucle, validación, estadísticas).
+    Estructura el código en funciones simples:
+        agregar_producto()
+        mostrar_inventario()
+        calcular_estadisticas()
+    Deja un comentario final resumiendo el objetivo de la semana.
+
+
+                Criterios de aceptación
+
+El sistema debe mostrar siempre el menú principal hasta que el usuario seleccione salir.
+Los productos deben almacenarse en una lista de diccionarios.
+El menú debe manejar opciones inválidas sin cerrar el programa.
+Se debe calcular y mostrar correctamente el valor total del inventario y el número total de productos.
+El código debe estar modularizado en funciones, comentado y legible.
+
+
+"""
