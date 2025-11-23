@@ -57,7 +57,7 @@ def create_product(inventory: list[dict] = inventory, categories: list[str] = ca
     incorrectType = False
 
     for category in categories:
-        value = input(f"Ingrese {category} del product: ").capitalize()
+        value = input(f"Ingrese {category} del producto: ").capitalize()
 
         product[category] = value
 
@@ -68,13 +68,13 @@ def create_product(inventory: list[dict] = inventory, categories: list[str] = ca
     
     except:
         incorrectType = True
-        print("\n¡ERROR, El price y la quantity deben ser números!")
+        print("\n¡ERROR, El precio y la cantidad deben ser números!")
 
 
     # Loop that allows me to verify that a new product isn't in the inventory.
     for repeated in inventory:
         if repeated["name"] in product.values():
-            print("\n\t¡El product ya existe!")
+            print("\n\t¡El producto ya existe!")
             exists = True
 
     # If the previous validations are correct, add the product dictionary to the inventory list.
@@ -103,7 +103,7 @@ def show_inventory(inventory: list[dict] = inventory, categorias: list[str] = ca
         input(f"\n\n{" ":>2}Presione una tecla para continuar: ")
 
     else:
-        print("\nEl inventory está vacío, primero debe ingresar algún product al inventory")
+        print("\nEl inventario está vacío, primero debe ingresar algún producto al inventario")
         
         clear_console(2, 4)
 
@@ -111,13 +111,13 @@ def show_inventory(inventory: list[dict] = inventory, categorias: list[str] = ca
 
 def calculate_statistics(inventory: list[dict] = inventory, product: dict = {}) -> None:
 
-    statistics = int(input("\n 1) Valor total del inventory \n 2) La quantity total de productos registrados\n\nIngrese el número de la opción que desea realizar: "))
+    statistics = int(input("\n 1) Valor total del inventario \n 2) La cantidad total de productos registrados\n\nIngrese el número de la opción que desea realizar: "))
 
     addition = 0
 
     if len(inventory) == 0:
 
-        print("\nEl inventory está vacío, primero debe ingresar algún product al inventory")
+        print("\nEl inventario está vacío, primero debe ingresar algún producto al inventario")
 
         clear_console(2)
 
@@ -126,17 +126,17 @@ def calculate_statistics(inventory: list[dict] = inventory, product: dict = {}) 
         match statistics:
                 
             case 1:    
-                print("\n\t** Valor total del inventory **\n")
+                print("\n\t** Valor total del inventario **\n")
 
                 for product in inventory:
 
                     # Multiply the price of each product by the quantity. Then, sum the values and assign the result to the variable addition.
                     addition += float(product["price"]) * float(product["quantity"])
 
-                    print(f"""name: {product["name"]} | price: ${product["price"]} | calidad: {product["quantity"]} | valor total: ${float(product["price"])
+                    print(f"""nombre: {product["name"]} | precio: ${product["price"]} | cantidad: {product["quantity"]} | valor total: ${float(product["price"])
                                                                                                                                       * float(product["quantity"]) :.2f}""")
                     # Print the total sum of the inventory with two decimals. (:.2f)
-                print(f"\n\n* El valor total del inventory es ${addition:.2f}")
+                print(f"\n\n* El valor total del inventario es ${addition:.2f}")
 
                     
             case 2:
@@ -149,10 +149,10 @@ def calculate_statistics(inventory: list[dict] = inventory, product: dict = {}) 
                     # Sum the total quantity of the products in the inventory
                     addition += int(product["quantity"])
                         
-                    print(f"name: {product["name"]} | price: {product["price"]} | quantity: {product["quantity"]}")
+                    print(f"nombre: {product["name"]} | precio: {product["price"]} | cantidad: {product["quantity"]}")
 
-                print(f"\n\n* Hay {productQuantity} product(s) diferente(s) en el inventory")
-                print(f"* En total hay una quantity de {addition} product(s)")
+                print(f"\n\n* Hay {productQuantity} producto(s) diferente(s) en el inventario")
+                print(f"* En total hay una cantidad de {addition} producto(s)")
 
             case _:
 

@@ -20,29 +20,29 @@ while True:
 
     # \n Newline
     # \t Tabulation
-    print("\n\t**** Bienvenido a la gestión de productos del inventory ****")
+    print("\n\t**** Bienvenido a la gestión de productos del inventario ****")
 
 
     # The try/except block controls errors in the execution of the program
     try:
 
-        option = int(input("\n 1) Agregar product\n 2) Mostrar inventory\n 3) Calcular estadísticas\n 4) Salir\n\nIngrese el número de la opción que desea realizar: "))
+        option = int(input("\n 1) Agregar producto\n 2) Mostrar inventario\n 3) Calcular estadísticas\n 4) Salir\n\nIngrese el número de la opción que desea realizar: "))
 
         print()
 
         if option == 1:
 
-            print("\n\t** Agregar productos al inventory **\n")
+            print("\n\t** Agregar productos al inventario **\n")
             create_product()
 
         elif option == 2:
 
-            print("\n\t** Mostrar productos del inventory **\n")
+            print("\n\t** Mostrar productos del inventario **\n")
             show_inventory()
             
         elif option == 3:
             
-            print("\n\t** Estadísticas del inventory **")
+            print("\n\t** Estadísticas del inventario **")
             calculate_statistics()
 
         elif option == 4:

@@ -162,7 +162,7 @@ def delete_incorrect(file_path, inventory: list[dict]) -> None:
 
     
     """
-    incorrectColumns = input("\n\tDesea delete la columna incorrectas? (si/no):").lower()
+    incorrectColumns = input("\n\tDesea eliminar las columnas incorrectas? (si/no):").lower()
     
     if incorrectColumns == "si":
         
@@ -173,7 +173,7 @@ def delete_incorrect(file_path, inventory: list[dict]) -> None:
             save_csv(inventory, file_path)
 
         except Exception as error:
-            print("\n\tError, no se pudo delete las columnas incorrecta de la base de datos", error)
+            print("\n\tError, no se pudo eliminar las columnas incorrecta de la base de datos", error)
 
     else:
         print("\n\tNo se ha eliminado las columnas incorrecta de la base de datos")

@@ -16,9 +16,9 @@ while True:
     # A try/except block that allows for error handling if the entered data type is incorrect.
     try:
 
-        name = str(input("\nDigite el name del product: ").capitalize())
-        quantity = int(input("Digite la quantity (Debe ser un número entero): "))
-        price = float(input("Digite el price (Debe ser un número): "))
+        name = str(input("\nDigite el nombre del producto: ").capitalize())
+        quantity = int(input("Digite la cantidad (debe ser un número entero): "))
+        price = float(input("Digite el precio (debe ser un número): "))
 
     except:
         
@@ -45,7 +45,7 @@ while True:
         # '\n': Newline (or line break) 
         # '\t': Tabulation (or tab) 
         # :.2f: Rounds the number to two decimal places.
-        print(f"\n\t{"*"*5} Nombre del product: {name}, Cantidad: {quantity} | Precio: ${price:.2f} | Costo Total: ${total_cost:.2f} {"*" * 5}\n")
+        print(f"\n\t{"*"*5} Nombre del producto: {name}, Cantidad: {quantity} | Precio: ${price:.2f} | Costo Total: ${total_cost:.2f} {"*" * 5}\n")
         break
         
 
