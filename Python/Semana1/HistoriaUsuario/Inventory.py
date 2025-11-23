@@ -16,9 +16,9 @@ while True:
     # A try/except block that allows for error handling if the entered data type is incorrect.
     try:
 
-        name = str(input("\nDigite el nombre del product: ").capitalize())
-        quantity = int(input("Digite la cantidad (Debe ser un número entero): "))
-        price = float(input("Digite el precio (Debe ser un número): "))
+        name = str(input("\nDigite el name del product: ").capitalize())
+        quantity = int(input("Digite la quantity (Debe ser un número entero): "))
+        price = float(input("Digite el price (Debe ser un número): "))
 
     except:
         

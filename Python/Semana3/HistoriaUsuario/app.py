@@ -1,31 +1,62 @@
-# Se importan las funciones del módulo servicios
-from servicios import agregar_producto, mostrar_inventario, buscar_producto, actualizar_producto, eliminar_producto, \
-    calcular_estadisticas
+"""
+                  Main Module: Product Inventory Management (app)
+    
+    The program manages a product inventory using a main menu with different options controlled through a "While" loop.
+    The loop options are:
 
-# Se importan las funciones del módulo archivos
-from archivos import guardar_csv, cargar_csv, eliminar_incorrectos, manejoCargaCSV
+        1) Add: Creates a new product by invoking the create_product function.
+        2) Show: Shows all products in the inventory by invoking the show_inventory function.
+        3) Search: Searches for a specific product by invoking the search_product function.
+        4) Update: Updates a product using the search_product and update_product functions.
+        5) Delete: Deletes a product using the search_product and delete_product functions.
+        6) Statistics: Generates a summary of the main inventory statistics.
+        7) Save CSV: Saves the inventory in CSV format by invoking the save_csv function.
+        8) Load CSV: Loads the inventory from a CSV file by invoking the load_csv function.
+        9) Exit: Terminates the program execution.
 
-# Se importa Path desde pathlib
+    The program is composed of three modules:
+        
+        * app (current module): Controls the menu and the program execution.
+        * file: Contains the functions that control saving and loading the CSV file (save_csv, load_csv, delete_incorrect).
+        * Services: Contains all the functions responsible for the CRUD (Create, Read, Update, Delete) operations 
+        (create_product, show_inventory, search_product, update_product, delete_product, calculate_statistics).
+
+"""
+
+
+# The functions from the "services" module are imported
+from services import create_product, show_inventory, search_product, update_product, delete_product, \
+    calculate_statistics
+
+# The functions from the "files" module are imported
+from file import save_csv, load_csv, delete_incorrect, controlLoadCSV
+
+# Path is imported from pathlib
 from pathlib import Path
 
-# Me permite manejar la ruta relativa de la ubicación de mi carpeta y crea el archivo CSV inventory
-ruta = Path(__file__).parent / "inventory.csv"
+# Allows handling the absolute filePath of the folder and creates the inventory CSV file.
+filePath = Path(__file__).parent / "inventory.csv"
 
-# inventory = []
+inventory = []
 
-# Inventario en memoria 
-inventario = [{"name": "Cuaderno", "price": 100.2, "quantity": 10},
-               {"name": "Marcadores", "price": 200.2, "quantity": 55}
-              ]
+# Inventory in memory 
+# inventory = [{"name": "Cuaderno", "price": 100.2, "quantity": 10}, {"name": "Borrador", "price": 200.2, "quantity": 55}]
 
-# Bucle que controla el menú
+if filePath.exists():
+    existsFile = True
+
+else:
+    existsFile = False 
+
+
+# Main loop
 while True:
 
-    print("\n\t**** Bienvenido a la gestión de productos de inventory ****")
+    print("\n\t**** Bienvenido a la gestión de productos de inventario ****")
 
-    # Bloque try/except/else que controla las opciones del menú
+    # Try/except/else block that controls the menu options.
     try:
-        opcion = int(input(
+        option = int(input(
             "\n 1) Agregar\n 2) Mostrar\n 3) Buscar\n 4) Actualizar\n 5) Eliminar\n 6) Estadísticas\n 7) Guardar CSV \n 8) Cargar CSV \n 9) Salir"
                  "\n\nIngrese el número de la opción que desea realizar: "))
 
@@ -33,271 +64,286 @@ while True:
 
         print("\n\t** ¡Valor incorrecto, intente de nuevo! **")
 
-    # Si el try funciona ingresa al else
+    # If the "try" works, it goes into the "else".
     else:
 
-        # Match de la variable "option"
-        match opcion:
+        # "option" match
+        match option:
         
             case 1:
 
-                print("\n\t** Agregar productos al inventory **\n")
+                print("\n\t** Agregar productos al inventario **\n")
 
-                # try/except/else que controla que el type de dato ingresado sea correcto
+                # try/except/else that checks that the input data type is correct.
                 try:
-                    nombre = str(input("Ingrese el name: ")).capitalize()
+                    name = str(input("Ingrese el nombre: ")).capitalize()
 
-                    precio = float(input("Ingrese el price: "))
+                    price = float(input("Ingrese el precio: "))
 
-                    cantidad = int(input("Ingrese la quantity: "))
+                    quantity = int(input("Ingrese la cantidad: "))
 
                 except:
                     print(
-                        "\n El type de dato ingresado es incorrecto\n Recuerde que el price y la quantity deben ser números")
-                    
-                
-                # Si el try funciona invoca la función "agregar_producto"
+                        f"\n\t{" ":>6}** El tipo de dato ingresado es incorrecto **\n\t Recuerde que el precio y la cantidad deben ser números")
+
+
+                # If the "try" works, it invokes the function "create_product".
                 else:
-                    inventario = agregar_producto(inventario, nombre=nombre, precio=precio, cantidad=cantidad)
+                    inventory = create_product(inventory = inventory, name=name, price=price, quantity=quantity)
 
             case 2:
+                
+                try:
 
-                print("\n\t** Mostrar productos del inventory **\n")
-                mostrar_inventario(inventario)
+                    print("\n\t** Mostrar productos del inventario **\n")
+                    show_inventory(inventory)
+
+                except Exception as e:
+                    print("\n\t¡Ha ocurrido un error!", e)
 
             case 3:
 
-                print("\n\t** Buscar productos del inventory **\n")
+                try:
+                    print("\n\t** Buscar productos del inventario **\n")
 
-                nombre = str(input("Ingrese el name: ")).capitalize()
+                    name = str(input("Ingrese el nombre: ")).capitalize()
 
-                busquedaProducto = buscar_producto(inventario, nombre=nombre)
+                    searchProduct = search_product(inventory= inventory, name=name)
 
-                print(f"\n\t El resultado de la búsqueda es: {busquedaProducto}")
+                    print(f"\n\t El resultado de la búsqueda es: {searchProduct}")
+
+                except Exception as e:
+                    print("\n\t¡Ha ocurrido un error!", e)
+
 
             case 4:
 
-                # Para actualizar product primero busco con la función "buscar_producto" que recibe la lista de inventarios
-                # y el product que voy a buscar
+                # To update a product, first invoke the function "search_product", passing the inventory list as an argument to locate
+                # the product within the inventory before proceeding with the update
 
-                print("\n\t** Actualizar product del inventory **\n")
+                print("\n\t** Actualizar producto del inventario **\n")
 
-                buscar = str(input("Ingrese el name del product: ")).capitalize()
+                search = str(input("Ingrese el nombre del producto: ")).capitalize()
+ 
+                result = search_product(inventory=inventory, name=search)
 
-                resultado = buscar_producto(inventario, nombre=buscar)
-
-                # Si encuentra el product, la variable resultado me arroja un diccionario del product,
-                # Para verificar esto se usa isinstance
-                if isinstance(resultado, dict):
+                # If it finds the product, the variable result returns a dictionary with it.
+                # To verify this, isinstance is used
+                if isinstance(result, dict):
                     
-                    # El try/except/else controla la actualización del product
+                    # The try/except/else controls the product update
                     try:
 
-                        print(f"\n\tProducto encontrado: {resultado}")
+                        print(f"\n\tProducto encontrado: {result}")
 
-                        # la variable argumentos almacena en forma de diccionario los argumentos que recibe la función "actualizar_producto"
-                        argumentos = {"inventory": inventario, "name": resultado}
+                        # The variable arguments stores the arguments received by the function "update_product" in the form of a dictionary
+                        arguments = {"inventory": inventory, "name": result}
 
-                        # Si el usuario acepta, se actualiza el price y/o la quantity.
-                        actualizarPrecio = str(input("\n¿Desea modificar el price? (si/no): ")).lower()
+                        # If the user accepts, the price and/or quantity is updated
+                        updatePrice = str(input("\n¿Desea modificar el precio? (si/no): ")).lower()
 
-                        # Se agrega al diccionario "argumentos" los valores actualizados.
-                        if actualizarPrecio == "si":
+                        # The updated values are added to the 'arguments' dictionary
+                        if updatePrice == "si":
 
-                            nuevo_precio = float(input("Ingrese el nuevo price: "))
+                            new_price = float(input("Ingrese el nuevo precio: "))
 
-                            argumentos["nuevo_precio"] = nuevo_precio
+                            arguments["new_price"] = new_price
 
-                        actualizarCantidad = str(input("\n¿Desea modificar la quantity? (si/no): ")).lower()
+                        updateQuantity = str(input("\n¿Desea modificar la cantidad? (si/no): ")).lower()
 
-                        if actualizarCantidad == "si":
-                            nueva_cantidad = int(input("Ingrese la nueva quantity: "))
+                        if updateQuantity == "si":
+                            new_quantity = int(input("Ingrese la nueva cantidad: "))
 
-                            argumentos["nueva_cantidad"] = nueva_cantidad
+                            arguments["new_quantity"] = new_quantity
 
                     except:
                         print("Error")
 
-                    # Si el try funciona, else invoca la función "actualizar_producto" y desempaqueta
-                    # la "clave:valor" del diccionario "argumentos"
+                    # If the try founds, the else block invokes the function 'update_product'
+                    # and unpacks the key-value pairs from the 'arguments' dictionary.
                     else:
-                        inventario = actualizar_producto(**argumentos)
+                        inventory = update_product(**arguments)
                         
-                # Si isinstance no encuentra el diccionario, trae un mensaje de que no encontró el product
+                # If isinstance doesn't find the dictionary, it returns a message that it didn't find the product.
                 else:
-                    print(resultado)
+                    print(result)
 
             case 5:
                 
-                # Para eliminar el product primero busco con la función "buscar_producto", recibe la lista de inventarios y el product que voy a buscar
+                # To delete the product, I first search using the "buscar_producto" function, which receives the
+                # list of inventories and the product to search for
                 
-                print("\n\t** Eliminar product del inventory **\n")
+                print("\n\t** Eliminar productos del inventario **\n")
 
-                buscar = str(input("Ingrese el name del product: ")).capitalize()
+                search = str(input("Ingrese el nombre del producto: ")).capitalize()
 
-                resultado = buscar_producto(inventario, nombre=buscar)
+                result = search_product(inventory=inventory, name=search)
 
-                # Si encuentra el product, la variable "resultado" arroja un diccionario del product
-                # Para verificar esto se usa isinstance
-                if isinstance(resultado, dict):
-                    print(f"\n\tProducto encontrado: {resultado}")
+                # If it finds the product, the "result" variable returns a dictionary of the product.
+                # isinstance is used to verify this
 
-                    # Si "buscar_producto" encuentra el product, se confirma la eliminación
-                    eliminar = input("\n\tEstá seguro de eliminarlo? (si/no): ").lower()
+                if isinstance(result, dict):
+                    print(f"\n\tProducto encontrado: {result}")
+
+                    delete = input("\n\tEstá seguro de eliminarlo? (si/no): ").lower()
                     
-                    # La variable resultado trae una clave con el índice del product en la lista inventory
-                    if eliminar == "si":
-                        eliminar_producto(inventario, nombre = resultado["indice"])
+                    # The 'result' variable brings a key with the product's index in the inventory list.
+                    if delete == "si":
+                        delete_product(inventory=inventory, name = int(result["index"]))
 
                     else:
-                        print("\n\tNo se ha eliminado el product")
+                        print("\n\tNo se ha eliminado el producto")
                         
-                # Si isinstance no devuelve el diccionario, imprime un mensaje de que no encontró el product
+                # If isinstance doesn't return the dictionary, it prints a message that it didn't find the product
                 else:
-                    print(resultado)
+                    print(result)
         
 
             case 6:
-                calcular_estadisticas(inventario)
+                try:
+                    calculate_statistics(inventory)
+
+                except:
+                    print("\n\t ¡Error!, verifique que el inventario tenga productos")
 
         
             case 7:
-                
-                # Para guardar en CSV, comprueba que el inventory no esté vacío
-                if inventario is None or inventario == []:
-
-                    print("\n\t El inventory está vacío no se puede guardar")
-
-                # Si no está vacío invoca a la función "guardar_csv", que recibe el inventory y la ruta donde guardar
-                else:
                     
-                    try:
-                        
-                        # La variable manejoCargaCSV, se usa para evitar que se pueda cargar un CSV de nuevo, si ya se cargó otro previamente. 
-                        # Se debe guardar antes de volver a cargar, para no duplicar el inventory
-                        guardar_csv(inventario, ruta)
-                        manejoCargaCSV = False
+                                 
+                    if inventory is None or len(inventory) == 0:
 
-                    except:
-                        print("\n\tNo se pudo guardar el archivo CSV")
+                        print("\n\t El inventario está vacío, no se puede guardar")
 
                     else:
-                        
-                        # Vacíar la lista inventory, para no duplicar productos cuando se carga el CSV
-                        inventario = []
-                        print("\n\t\tPara usar el inventory, cargue el archivo CSV")
+                        if controlLoadCSV == False and existsFile == True:
+                            print("\n\t¿Esta seguro que desea guarda un producto sin cargar el inventario?")
+                            print("\n\tPuede generar productos duplicados, ¡Mejor cargue el CSV antes de guardar!")
+                    
+                        else:
 
+                            try:
+                                
+                                # The 'controlLoadCSV' variable is used to prevent a CSV from being loaded again if another one has already been loaded previously
+                                # It must be saved before loading again to avoid duplicating the inventory.
+                                save_csv(inventory, filePath)
+                                controlLoadCSV = False
+                                firstSave = False
+
+                            except:
+                                print("\n\tNo se pudo guardar el archivo CSV")
+
+                            else:
+                                
+                                # Empty the inventory list, so as not to duplicate products when the CSV is loaded
+                                print("\n\t\tPara usar el inventario, cargue el archivo CSV")
+
+                                inventory.clear()
 
             case 8:
-                    # La variable manejoCargaCSV, impide volver a cargar el CSV sin guardarlo antes, 
-                    # Al guardar se libera la lista inventory para no duplicar valores
-                    if manejoCargaCSV:
-                       print("\n\t** Ya se había cargado un archivo CSV, guarde el inventory actual antes de cargar otra vez **")
+
+                    # The "controlLoadCSV" variable prevents reloading the CSV without saving it first. Upon saving,
+                    # the inventory list is freed to avoid duplicating values
+                    if controlLoadCSV:
+                       print("\n\t** Ya se había cargado un archivo CSV, guarde el inventario actual antes de cargar otra vez **")
 
                     else:
-                        
-                        # Si la función "cargar_csv" encuentra en la ruta el archivo CSV
-                        # Retorna el "inventarioCargado", y un booleano para la variable "incorrectos", True si encontro valores inválidos o espacios en el CSV
-                        try:
-                            inventarioCargado, incorrectos = cargar_csv(ruta=ruta)
 
+                        # If the cargar_csv function finds the CSV file in the filePath, it returns the "inventoryLoaded"
+                        # and a boolean for the "incorrect" variable, which is True if it found invalid values or spaces in the CSV
+                        try:
+                            inventoryLoaded, incorrect = load_csv(filePath)
+
+                            print(inventoryLoaded)
+                            print("---")
+                            print(inventory)
+                            
                         except Exception as e:
-                            print("\n\t¡El inventory no existe!, guarde un archivo CSV primero.", e)
+                            print("\n\t¡El inventario no existe!, guarde un archivo CSV primero.")
 
                         else:
-                            
-                            # Si incorrectos retorna True se llama a la función "eliminar_incorrectos" con la ruta del archivo
-                            if incorrectos:
-                                eliminar_incorrectos(ruta)
+
+                            # If incorrect returns True, the delete_incorrect function is called with the file's filePath
+                            if incorrect:
+                                delete_incorrect(filePath, inventoryLoaded)
                                 
-                            # Si el "inventarioCargado" es una lista, ingresa a esta condición
-                            if isinstance(inventarioCargado, list):
+                            # If the "inventoryLoaded" is a list, enter this condition
+                            if isinstance(inventoryLoaded, list):
 
-                                # El bucle buscarRepetidos compara la variable "inventory" que está en memoria
-                                # Con la variable "inventarioCargado" que viene del CSV
-                                # En busca de nombres de product repetidos
-                                
-                                buscarRepetidos = True
+                                # The searchDuplicate loop compares the "inventory" variable, which is in memory,
+                                # with the "inventoryLoaded" variable that comes from the CSV file,
+                                # and then searches for repeated product names
+
+                                searchDuplicate = True
                                             
-                                while buscarRepetidos:
+                                while searchDuplicate:
 
-                                    buscarRepetidos = False
+                                    searchDuplicate = False
 
-                                    # Recorre dos bucles "for" anidados uno en "inventory" otro en "inventarioCargado"
-                                    for posicionCargado, productoCargado in enumerate(inventarioCargado):
-                                        for posicion, producto in enumerate(inventario):
+                                    # Iterate through two nested "for" loops: one in "inventory" and the other in "inventoryLoaded"
+                                    for indexLoaded, productLoaded in enumerate(inventoryLoaded):
+                                        for index, product in enumerate(inventory):
                                             
-                                            # Si encuentra repetidos, entra a la condición
-                                            if productoCargado["name"] == producto["name"]:
-                                                print(f"\n\t\t!El product {productoCargado["name"]}, ya existe!")
+                                            # If it finds repetitions, it enters the condition
+                                            if productLoaded["name"] == product["name"]:
+                                                print(f"\n\t\t!El producto {productLoaded["name"]}, ya existe!")
 
-                                                # Pide un input para saber que hacer con los repetidos
-                                                reemplazar = int(input("\n 1) Reemplazar product por lo cargado \n 2) Reemplazar product por el actual"
-                                                                   "\n 3) Cualquier otra tecla sumará el price y quantity actual con lo cargado "
+                                                # It asks for an input to know what to do with the repetitions
+                                                replace = int(input("\n 1) Reemplazar producto por lo cargado \n 2) Reemplazar producto por el actual"
+                                                                   "\n 3) Cualquier otra tecla sumará la cantidad actual con lo cargado y conservará el precio actual"
                                                                    "\n\t¿Qué desea hacer?: "))
 
-                                                # De acuerdo a la opción reemplaza por el valor de quantity y price,
-                                                # Deja el actual o suma ambos valores
-                                                match reemplazar:
+                                                match replace:
                                                     case 1:
-                                                        producto["price"] = productoCargado["price"]
-                                                        producto["quantity"] = productoCargado["quantity"]
-                                                        inventarioCargado.pop(posicionCargado)
-                                                        print("\n\t¡Se ha reemplazado el product correctamente!")
+                                                        product["price"] = productLoaded["price"]
+                                                        product["quantity"] = productLoaded["quantity"]
+                                                        inventoryLoaded.pop(indexLoaded)
+                                                        print("\n\t¡Se ha reemplazado el producto correctamente!")
 
                                                     case 2:
-                                                        inventarioCargado.pop(posicionCargado)
-                                                        print("\n\t¡Se ha reemplazado el product correctamente!")
+                                                        inventoryLoaded.pop(indexLoaded)
+                                                        print("\n\t¡Se ha reemplazado el producto correctamente!")
 
                                                     case _:
-                                                        producto["price"] += productoCargado["price"]
-                                                        producto["quantity"] += productoCargado["quantity"]
-                                                        inventarioCargado.pop(posicionCargado)
+                                                        product["quantity"] += productLoaded["quantity"]
+                                                        inventoryLoaded.pop(indexLoaded)
                                                         print("\n\t¡Se han sumado los productos correctamente!")
                                                 
-                                                # La variable "buscarRepetidos" hace que el bucle "While" se recorra hasta que no encuentre repetidos
-                                                buscarRepetidos = True
+                                                # The variable "searchDuplicate" causes the "While" loop to iterate until no duplicate are found
+                                                searchDuplicate = True
 
                                 print("\n\t\tInventario cargado desde el CSV: \n")
 
-                                # Acá, recorre dos bucles "for" anidados en el "inventarioCargado" desde CSV
-                                # Recorre las categories de cada product e imprime todos los productos cargados del CSV
-
-                                for producto in inventarioCargado:
-                                    for categoria in producto:
-                                        print(f"{categoria}: {producto[categoria]}")
+                                for product in inventoryLoaded:
+                                    for category in product:
+                                        print(f"{category}: {product[category]}")
                                     print()
 
-                                # A la lista en memoria "inventory" se le extiende "inventarioCargado"
-                                inventario.extend(inventarioCargado)
+                                inventory.extend(inventoryLoaded)
 
-                                manejoCargaCSV = True
+                                controlLoadCSV = True
                                 
-                                # Detiene la ejecución del programa para ver el inventarioCargado
                                 input("\n\tPresione una tecla para continuar...")
 
-                                
+
                                 print("\n\t\tInventario total actual: \n")
                                 
-                                # Acá, ya imprime todo lo que hay en el inventory después de extender ambas listas
-                                for producto in inventario:
-                                    for categoria in producto:
-                                        print(f"{categoria}: {producto[categoria]}")
+                                # Here, it already prints everything that is in the inventory after extending both lists
+                                for product in inventory:
+                                    for category in product:
+                                        print(f"{category}: {product[category]}")
                                     print()
 
-                                # Detiene la ejecución del programa para ver el inventory
                                 input("\n\tPresione una tecla para continuar...")
 
-                            # Si hay error al cargar el CSV, la función "cargar_csv" retorna un mensaje.
+                            # If there is an error loading the CSV, the function 'load_csv' returns a message.
                             else:
-                                print(inventarioCargado)
+                                print(inventoryLoaded)
 
-            # Fin del bucle.
             case 9:
                 print("\n\t*** Ha finalizado la ejecución del programa ***\n")
                 break
-                
-            # Cualquier otra opción ingresada
+
+            # Any other option entered
             case _ :
                 print("\n\t¡Valor incorrecto, intente de nuevo!")
 
