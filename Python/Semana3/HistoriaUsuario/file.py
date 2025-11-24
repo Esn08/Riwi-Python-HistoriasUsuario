@@ -98,7 +98,7 @@ def load_csv(file_path, inventory: list[dict] = []) -> tuple[list[dict], bool]:
 
                     for column in columnsCSV: # pyright: ignore[reportOptionalIterable]
                         if column not in categories:
-                            print(f"\t\tColumna {column} no válida")
+                            print(f"\tColumna '{column}' no válida")
 
                     print(f"\n\tSolo se permiten las siguientes columnas:{categories}")
 

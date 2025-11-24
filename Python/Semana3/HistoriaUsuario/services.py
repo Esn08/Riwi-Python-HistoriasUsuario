@@ -193,8 +193,8 @@ def calculate_statistics(inventory: list[dict]) -> None:
 
     print("\n\t\t*** Estadísticas del inventario ***")
     print("\n\tLas unidades totales son:", sumQuantity)
-    print("\tEl valor total es:", "$", totalValue)
-    print(f"\n\tEl producto más caro es: {maxPrice["name"]}, precio: {maxPrice["price"]}")
+    print("\tEl valor total es:", "$", round(totalValue, 2))
+    print(f"\n\tEl producto más caro es: {maxPrice["name"]}, precio: {maxPrice["price"]:.2f}")
     print(f"\tEl producto con más stock es: {maxQuantity["name"]}, cantidad: {maxQuantity["quantity"]}")
 
     input(f"\n{" ":<3}Presione una tecla para continuar...")

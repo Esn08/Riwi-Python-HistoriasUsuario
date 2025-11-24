@@ -252,10 +252,6 @@ while True:
                         # and a boolean for the "incorrect" variable, which is True if it found invalid values or spaces in the CSV
                         try:
                             inventoryLoaded, incorrect = load_csv(filePath)
-
-                            print(inventoryLoaded)
-                            print("---")
-                            print(inventory)
                             
                         except Exception as e:
                             print("\n\t¡El inventario no existe!, guarde un archivo CSV primero.")
@@ -321,6 +317,8 @@ while True:
                                 inventory.extend(inventoryLoaded)
 
                                 controlLoadCSV = True
+
+                                inventoryLoaded.clear()
                                 
                                 input("\n\tPresione una tecla para continuar...")
 
